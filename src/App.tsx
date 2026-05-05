@@ -110,7 +110,7 @@ function App() {
         }
     ];
 
-    const fakeGameStats: GameStats = CalculateGameStats(fakeGames[1]);
+    const fakeGameStats: GameStats = CalculateGameStats(fakeGames[0]);
 
     return (
         <>
