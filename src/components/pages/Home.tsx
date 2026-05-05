@@ -1,8 +1,13 @@
 import {useNavigate} from "react-router";
+import {useEffect} from "react";
 
-const Home = () => {
+const Home = ({setTitle}: {setTitle: (newTitle: string) => void }) => {
 
     const nav = useNavigate();
+
+    useEffect(() => {
+       setTitle("Home");
+    });
 
     return (
         <>
