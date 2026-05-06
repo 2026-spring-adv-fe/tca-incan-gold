@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route} from "react-router";
+import {Routes, Route, HashRouter} from "react-router";
 import {useState} from "react";
 
 import Home from "./pages/Home.tsx";
@@ -21,7 +21,7 @@ const App = () => {
 
     return (
         <div data-theme={theme} className="min-h-screen bg-base-300">
-            <BrowserRouter>
+            <HashRouter>
                 <Routes>
                     <Route path="/" element={<Header theme={theme} setTheme={setTheme} title={title}/>}>
                         <Route path="/" element={<Home setTitle={setTitle} games={games} setCurrentGame={setCurrentGame}/>}/>
@@ -32,7 +32,7 @@ const App = () => {
                         <Route path="/results" element={<Results setTitle={setTitle} currentGame={currentGame}/>}/>
                     </Route>
                 </Routes>
-            </BrowserRouter>
+            </HashRouter>
         </div>
     );
 }
