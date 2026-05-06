@@ -19,14 +19,30 @@ type GameStats = {
     riskiestPlayer: string,
 }
 
-function CalculateGameStats(game: Game): GameStats {
-    const stats: GameStats = {
+type GeneralFacts = {
+    lastPlayed: string,
+    totalGames: number,
+    shortestGame: string,
+    longestGame: string
+}
+
+type Leaderboard = {
+    name: string,
+    score: number
+}[];
+
+function CreateEmptyGameStats(): GameStats {
+    return {
         gemsPerRound: [],
         turnsPerRound: [],
         mostDeadPlayer: "",
         mostAlivePlayer: "",
         riskiestPlayer: ""
     };
+}
+
+function CalculateGameStats(game: Game): GameStats {
+    const stats: GameStats = CreateEmptyGameStats();
 
     const playerDeaths: { [key: string]: number } = {};
     const playerLives: { [key: string]: number } = {};
@@ -96,5 +112,5 @@ function CalculateGameStats(game: Game): GameStats {
     return stats;
 }
 
-export type {GameStats};
-export {CalculateGameStats};
+export type {GameStats, GeneralFacts, Leaderboard};
+export {CalculateGameStats, CreateEmptyGameStats};

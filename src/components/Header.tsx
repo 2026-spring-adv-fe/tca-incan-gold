@@ -1,14 +1,21 @@
 import {Outlet} from "react-router";
+
 import ThemeButton from "./ThemeButton.tsx";
 
 const DEFAULT_TITLE = "TCA Incan Gold";
 
-const Header = ({theme, setTheme, title}: { theme: string, setTheme: (newTheme: string) => void, title: string }) => {
+type HeaderProps = {
+    theme: string,
+    setTheme: (newTheme: string) => void,
+    title: string
+};
+
+const Header = ({theme, setTheme, title}: HeaderProps) => {
     return (
         <div>
-            <div className="navbar bg-base-300 px-5">
+            <div className="navbar bg-base-100 px-5 shadow-base-200">
                 <div className="flex-1">
-                    <span className="text-xl">{title}</span>
+                    <h1 className="text-xl">{title}</h1>
                 </div>
                 <div className="flex-none">
                     <ThemeButton theme={theme} setTheme={setTheme}/>

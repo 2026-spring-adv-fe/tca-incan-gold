@@ -1,18 +1,39 @@
 import {useNavigate} from "react-router";
 import {useEffect} from "react";
 
-const Home = ({setTitle}: {setTitle: (newTitle: string) => void }) => {
+import Card from "../Card.tsx";
+
+type HomeProps = {
+    setTitle: (newTitle: string) => void
+}
+
+const Home = ({setTitle}: HomeProps) => {
 
     const nav = useNavigate();
 
     useEffect(() => {
-       setTitle("Home");
+        setTitle("Home");
     });
 
     return (
         <>
-            <h1>Home</h1>
-            <button className="btn btn-primary" onClick={() => nav("/setup")}>Play</button>
+            <Card>
+                <div className="space-y-2">
+                    <h1 className="text-4xl font-bold">
+                        blah
+                    </h1>
+                    <p className="opacity-80 max-w-2xl">
+                        gaming
+                    </p>
+                </div>
+
+                <button className="btn btn-primary btn-lg w-full" onClick={() => nav('/setup')}>
+                    Start a Game
+                </button>
+            </Card>
+
+            <p>stats and leaderboards coming soon™</p>
+
         </>
     )
 }
