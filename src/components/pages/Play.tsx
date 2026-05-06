@@ -23,14 +23,22 @@ const Play = ({setTitle, currentGame, setCurrentGame, games, setGames}: PlayProp
         setTitle("Play");
     });
 
+    const finishGame = () => {
+        setGames([...games, currentGame]);
+        nav("/results");
+    }
+
     const nextRound = () => {
         const game: Game = {...currentGame};
-        game.rounds.push(currentRound);
+        const round: GameRound = {...currentRound};
+        round.players.forEach((player) => {
+           if (player.endedInDeath) player.gems = 0;
+        });
+        game.rounds.push(round);
         setCurrentGame(game);
         setCurrentRound(createEmptyRound(currentGame.players));
         if (currentGame.rounds.length == NUM_ROUNDS) {
-            setGames([...games, currentGame]);
-            nav("/results");
+            finishGame();
         }
     }
 
@@ -45,8 +53,13 @@ const Play = ({setTitle, currentGame, setCurrentGame, games, setGames}: PlayProp
             <div className="flex flex-col gap-2">
                 <button className="btn btn-lg btn-primary w-full"
                         onClick={nextRound}>{currentGame.rounds.length == NUM_ROUNDS - 1 ? "Save Game" : "Next Round"}</button>
-                <button className="btn btn-lg btn-soft btn-warning w-full" onClick={() => nav("/")}>Discard Game
-                </button>
+                <div className="grid grid-cols-2 gap-2">
+                    <button className="btn btn-lg btn-soft btn-error w-full" onClick={() => nav("/")}>Discard Game
+                    </button>
+                    <button className="btn btn-lg btn-soft btn-warning w-full" onClick={() => finishGame()}>Finish Early
+                    </button>
+                </div>
+
             </div>
         </>
     )

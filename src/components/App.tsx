@@ -24,7 +24,7 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Header theme={theme} setTheme={setTheme} title={title}/>}>
-                        <Route path="/" element={<Home setTitle={setTitle}/>}/>
+                        <Route path="/" element={<Home setTitle={setTitle} games={games} setCurrentGame={setCurrentGame}/>}/>
                         <Route path="/setup" element={<Setup setTitle={setTitle} setCurrentGame={setCurrentGame}/>}/>
                         <Route path="/play" element={<Play setTitle={setTitle} currentGame={currentGame}
                                                            setCurrentGame={setCurrentGame} games={games}

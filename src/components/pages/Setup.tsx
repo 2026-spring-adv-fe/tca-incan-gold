@@ -12,7 +12,7 @@ type SetupProps = {
 
 const Setup = ({setTitle, setCurrentGame}: SetupProps) => {
 
-    const [players, setPlayers] = useState<string[]>(["a", "b", "c"]);
+    const [players, setPlayers] = useState<string[]>([]);
     const [newPlayerName, setNewPlayerName] = useState("");
 
     useEffect(() => {
@@ -65,6 +65,11 @@ const Setup = ({setTitle, setCurrentGame}: SetupProps) => {
                 </button>
                 <button className="btn btn-lg btn-soft btn-warning w-full" onClick={() => nav("/")}>Cancel</button>
             </div>
+
+            <br/>
+            <button className="btn btn-secondary" onClick={() => {
+                setPlayers(["a", "b", "c"]);
+            }}>Testing Players</button>
         </>
     )
 }

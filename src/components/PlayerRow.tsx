@@ -31,21 +31,27 @@ const PlayerRow = ({player, currentRound, setCurrentRound}: PlayerRowProps) => {
     return (
         <Card key={player}>
             <h1 className="text-xl font-black">🧍 {currentRound.players[player].name}</h1>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-[max-content_1fr_1fr_max-content] gap-2">
+                <button className="btn btn-soft btn-square" onClick={() => {
+                    setGems(currentRound.players[player].gems + 1);
+                }} disabled={currentRound.players[player].endedInDeath}>＋</button>
                 <label className="input w-full">
                     💎
-                    <input type="number" placeholder="Gems" min={0} value={currentRound.players[player].gems}
+                    <input type="number" placeholder="Gems" min={0} value={currentRound.players[player].endedInDeath ? 0 : currentRound.players[player].gems}
                            onChange={(e) => {
                                setGems(parseInt(e.target.value));
-                           }}/>
+                           }} disabled={currentRound.players[player].endedInDeath}/>
                 </label>
                 <label className="input w-full">
                     🔁
                     <input type="number" placeholder="Turns" min={0} value={currentRound.players[player].turns}
                            onChange={(e) => {
                                setTurns(parseInt(e.target.value));
-                           }}/>
+                           }} disabled={currentRound.players[player].endedInDeath}/>
                 </label>
+                <button className="btn btn-soft btn-square" onClick={() => {
+                    setTurns(currentRound.players[player].turns + 1);
+                }} disabled={currentRound.players[player].endedInDeath}>＋</button>
             </div>
             <div className="join grid grid-cols-2">
                 <button

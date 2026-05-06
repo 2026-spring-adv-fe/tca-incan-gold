@@ -17,6 +17,10 @@ type GameStats = {
     mostAlivePlayer: string,
     /// Player that lasted the longest WHILE SURVIVING
     riskiestPlayer: string,
+
+    totalGems: number,
+    totalTurns: number,
+    totalDeaths: number
 }
 
 type GeneralFacts = {
@@ -37,7 +41,10 @@ function CreateEmptyGameStats(): GameStats {
         turnsPerRound: [],
         mostDeadPlayer: "",
         mostAlivePlayer: "",
-        riskiestPlayer: ""
+        riskiestPlayer: "",
+        totalDeaths: 0,
+        totalGems: 0,
+        totalTurns: 0
     };
 }
 
@@ -60,6 +67,12 @@ function CalculateGameStats(game: Game): GameStats {
             average: 0
         }
         round.players.forEach((player: PlayerRound): void => {
+
+            stats.totalGems += player.gems;
+            stats.totalTurns += player.turns;
+            if (player.endedInDeath) {
+                stats.totalDeaths++;
+            }
 
             if (!(player.name in playerDeaths)) {
                 playerDeaths[player.name] = 0;

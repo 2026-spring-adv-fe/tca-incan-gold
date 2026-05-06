@@ -2,12 +2,15 @@ import {useNavigate} from "react-router";
 import {useEffect} from "react";
 
 import Card from "../Card.tsx";
+import type {Game} from "../../data/Game.ts";
 
 type HomeProps = {
-    setTitle: (newTitle: string) => void
+    setTitle: (newTitle: string) => void,
+    games: Game[],
+    setCurrentGame: (newGame: Game) => void,
 }
 
-const Home = ({setTitle}: HomeProps) => {
+const Home = ({setTitle, games, setCurrentGame}: HomeProps) => {
 
     const nav = useNavigate();
 
@@ -19,8 +22,8 @@ const Home = ({setTitle}: HomeProps) => {
         <>
             <Card>
                 <div className="space-y-2">
-                    <h1 className="text-4xl font-bold">
-                        blah
+                    <h1 className="text-4xl font-bold color">
+                        Incan Gold Companion
                     </h1>
                     <p className="opacity-80 max-w-2xl">
                         gaming
@@ -31,6 +34,31 @@ const Home = ({setTitle}: HomeProps) => {
                     Start a Game
                 </button>
             </Card>
+
+            <ul className="list bg-base-100 rounded-box shadow-md">
+
+                <li className="p-4 pb-2 tracking-wide font-bold">Previous Games</li>
+
+                {
+                    games.map((game) => {
+                        return (
+                            <li className="list-row">
+                                <div className="list-col-grow">
+                                    <div>{new Date(game.startTime).toLocaleString()}</div>
+                                    <div className="text-xs uppercase font-semibold opacity-60">{game.players.length} Players</div>
+                                </div>
+                                <button className="btn btn-circle btn-soft" onClick={() => {
+                                    setCurrentGame(game);
+                                    nav("/results");
+                                }}>
+                                    🞂
+                                </button>
+                            </li>
+                        );
+                    })
+                }
+
+            </ul>
 
             <p>stats and leaderboards coming soon™</p>
 
