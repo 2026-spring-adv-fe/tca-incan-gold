@@ -23,22 +23,22 @@ const Play = ({setTitle, currentGame, setCurrentGame, games, setGames}: PlayProp
         setTitle("Play");
     });
 
-    const finishGame = () => {
-        setGames([...games, currentGame]);
-        nav("/results");
-    }
-
-    const nextRound = () => {
+    const nextRound = (forceFinish: boolean) => {
         const game: Game = {...currentGame};
         const round: GameRound = {...currentRound};
         round.players.forEach((player) => {
            if (player.endedInDeath) player.gems = 0;
         });
         game.rounds.push(round);
+        if (forceFinish || currentGame.rounds.length - 1 == NUM_ROUNDS) {
+            game.endTime = Date.now();
+        }
+        console.log("game before setCurrentGame: ", game);
         setCurrentGame(game);
         setCurrentRound(createEmptyRound(currentGame.players));
-        if (currentGame.rounds.length == NUM_ROUNDS) {
-            finishGame();
+        if (currentGame.rounds.length == NUM_ROUNDS || forceFinish) {
+            setGames([...games, game]);
+            nav("/results");
         }
     }
 
@@ -52,11 +52,11 @@ const Play = ({setTitle, currentGame, setCurrentGame, games, setGames}: PlayProp
             }
             <div className="flex flex-col gap-2">
                 <button className="btn btn-lg btn-primary w-full"
-                        onClick={nextRound}>{currentGame.rounds.length == NUM_ROUNDS - 1 ? "Save Game" : "Next Round"}</button>
+                        onClick={() => nextRound(false)}>{currentGame.rounds.length == NUM_ROUNDS - 1 ? "Save Game" : "Next Round"}</button>
                 <div className="grid grid-cols-2 gap-2">
                     <button className="btn btn-lg btn-soft btn-error w-full" onClick={() => nav("/")}>Discard Game
                     </button>
-                    <button className="btn btn-lg btn-soft btn-warning w-full" onClick={() => finishGame()}>Finish Early
+                    <button className="btn btn-lg btn-soft btn-warning w-full" onClick={() => nextRound(true)}>Finish Early
                     </button>
                 </div>
 

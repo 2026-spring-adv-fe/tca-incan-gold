@@ -22,7 +22,7 @@ const Results = ({setTitle, currentGame}: HomeProps) => {
     return (
         <>
             <h1 className="text-3xl font-bold">Game Results</h1>
-            <div className="stats stats-vertical shadow w-full overflow-hidden max-w-full">
+            <div className="stats stats-vertical shadow w-full overflow-hidden max-w-full bg-base-100">
                 <div className="stat">
                     <div className="stat-title">Total Gems</div>
                     <div className="stat-value text-success">{gameStats.totalGems}</div>

@@ -3,6 +3,7 @@ import {useEffect} from "react";
 
 import Card from "../Card.tsx";
 import type {Game} from "../../data/Game.ts";
+import {CalculateGeneralFacts, type GeneralFacts} from "../../data/GameStats.ts";
 
 type HomeProps = {
     setTitle: (newTitle: string) => void,
@@ -13,6 +14,8 @@ type HomeProps = {
 const Home = ({setTitle, games, setCurrentGame}: HomeProps) => {
 
     const nav = useNavigate();
+
+    const generalFacts: GeneralFacts = CalculateGeneralFacts(games);
 
     useEffect(() => {
         setTitle("Home");
@@ -40,9 +43,9 @@ const Home = ({setTitle, games, setCurrentGame}: HomeProps) => {
                 <li className="p-4 pb-2 tracking-wide font-bold">Previous Games</li>
 
                 {
-                    games.map((game) => {
+                    games.length == 0 ? <li className="list-row opacity-50">No Games</li> : games.map((game, i) => {
                         return (
-                            <li className="list-row">
+                            <li className="list-row" key={i}>
                                 <div className="list-col-grow">
                                     <div>{new Date(game.startTime).toLocaleString()}</div>
                                     <div className="text-xs uppercase font-semibold opacity-60">{game.players.length} Players</div>
@@ -60,7 +63,35 @@ const Home = ({setTitle, games, setCurrentGame}: HomeProps) => {
 
             </ul>
 
-            <p>stats and leaderboards coming soon™</p>
+            <ul className="list bg-base-100 rounded-box shadow-md mt-2">
+                <li className="p-4 pb-2 tracking-wide font-bold">General Facts</li>
+                <li className="list-row">
+                    <div className="list-col-grow">
+                        <div>Shortest Game</div>
+                    </div>
+                    {generalFacts.shortestGame}
+                </li>
+                <li className="list-row">
+                    <div className="list-col-grow">
+                        <div>Longest Game</div>
+                    </div>
+                    {generalFacts.longestGame}
+                </li>
+                <li className="list-row">
+                    <div className="list-col-grow">
+                        <div>Last Played</div>
+                    </div>
+                    {generalFacts.lastPlayed}
+                </li>
+                <li className="list-row">
+                    <div className="list-col-grow">
+                        <div>Total Games</div>
+                    </div>
+                    {generalFacts.totalGames}
+                </li>
+            </ul>
+
+            <p className="mt-2">stats and leaderboards coming soon™</p>
 
         </>
     )

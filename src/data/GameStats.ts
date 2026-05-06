@@ -1,4 +1,5 @@
 import type {Game, GameRound, PlayerRound} from "./Game.ts";
+import {durationFormatter} from "human-readable";
 
 type MinMaxAverage = {
     min: number,
@@ -34,6 +35,44 @@ type Leaderboard = {
     name: string,
     score: number
 }[];
+
+function CreateEmptyGeneralFacts(): GeneralFacts {
+    return {
+        lastPlayed: "N/A",
+        totalGames: 0,
+        shortestGame: "N/A",
+        longestGame: "N/A"
+    };
+}
+
+function CalculateGeneralFacts(games: Game[]): GeneralFacts {
+    console.log(games);
+    const facts: GeneralFacts = CreateEmptyGeneralFacts();
+    let lastPlayedTime = 0;
+    let shortestGameTime = Number.MAX_VALUE;
+    let longestGameTime = 0;
+    facts.totalGames = games.length;
+    games.forEach((game: Game) => {
+        if (game.startTime > lastPlayedTime) {
+            lastPlayedTime = game.startTime;
+        }
+        const gameLength = game.endTime - game.startTime;
+        if (gameLength > longestGameTime) {
+            longestGameTime = gameLength;
+        }
+        if (gameLength < shortestGameTime) {
+            shortestGameTime = gameLength;
+        }
+    });
+    if (lastPlayedTime != 0) facts.lastPlayed =  new Date(lastPlayedTime).toLocaleString();
+    if (longestGameTime != 0) facts.longestGame = durationFormatter<string>()(longestGameTime);
+    if (shortestGameTime != Number.MAX_VALUE) facts.shortestGame = durationFormatter<string>()(shortestGameTime);
+    return facts;
+}
+
+function CreateEmptyLeaderboard(): Leaderboard {
+    return [];
+}
 
 function CreateEmptyGameStats(): GameStats {
     return {
@@ -126,4 +165,4 @@ function CalculateGameStats(game: Game): GameStats {
 }
 
 export type {GameStats, GeneralFacts, Leaderboard};
-export {CalculateGameStats, CreateEmptyGameStats};
+export {CalculateGameStats, CreateEmptyGameStats, CreateEmptyGeneralFacts, CreateEmptyLeaderboard, CalculateGeneralFacts};
