@@ -46,7 +46,6 @@ function CreateEmptyGeneralFacts(): GeneralFacts {
 }
 
 function CalculateGeneralFacts(games: Game[]): GeneralFacts {
-    console.log(games);
     const facts: GeneralFacts = CreateEmptyGeneralFacts();
     let lastPlayedTime = 0;
     let shortestGameTime = Number.MAX_VALUE;

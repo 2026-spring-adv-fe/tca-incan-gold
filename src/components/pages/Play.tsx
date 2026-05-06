@@ -33,7 +33,6 @@ const Play = ({setTitle, currentGame, setCurrentGame, games, setGames}: PlayProp
         if (forceFinish || currentGame.rounds.length - 1 == NUM_ROUNDS) {
             game.endTime = Date.now();
         }
-        console.log("game before setCurrentGame: ", game);
         setCurrentGame(game);
         setCurrentRound(createEmptyRound(currentGame.players));
         if (currentGame.rounds.length == NUM_ROUNDS || forceFinish) {
