@@ -24,6 +24,14 @@ const Results = ({setTitle, currentGame}: HomeProps) => {
             <h1 className="text-3xl font-bold">Game Results</h1>
             <div className="stats stats-vertical shadow w-full overflow-hidden max-w-full bg-base-100 mt-2">
                 <div className="stat">
+                    <div className="stat-title">Winner</div>
+                    <div className="stat-value text-success">{gameStats.winner}</div>
+                </div>
+                <div className="stat">
+                    <div className="stat-title">Loser</div>
+                    <div className="stat-value text-error">{gameStats.loser}</div>
+                </div>
+                <div className="stat">
                     <div className="stat-title">Total Gems</div>
                     <div className="stat-value text-success">{gameStats.totalGems}</div>
                 </div>
@@ -95,6 +103,29 @@ const Results = ({setTitle, currentGame}: HomeProps) => {
                                     <td>{roundTurns.min}</td>
                                     <td>{roundTurns.max}</td>
                                     <td>{roundTurns.average.toFixed(0)}</td>
+                                </tr>
+                            );
+                        })
+                    }
+                    </tbody>
+                </table>
+            </div>
+            <h2 className="font-bold my-2">Gems per Player</h2>
+            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+                <table className="table">
+                    <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Gems</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        Object.keys(gameStats.gemsPerPlayer).map((key) => {
+                            return (
+                                <tr>
+                                    <td>{key}</td>
+                                    <td>{gameStats.gemsPerPlayer[key]}</td>
                                 </tr>
                             );
                         })

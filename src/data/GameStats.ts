@@ -18,6 +18,9 @@ type GameStats = {
     mostAlivePlayer: string,
     /// Player that lasted the longest WHILE SURVIVING
     riskiestPlayer: string,
+    gemsPerPlayer: {[key: string]: number},
+    winner: string,
+    loser: string,
 
     totalGems: number,
     totalTurns: number,
@@ -80,6 +83,9 @@ function CreateEmptyGameStats(): GameStats {
         mostDeadPlayer: "",
         mostAlivePlayer: "",
         riskiestPlayer: "",
+        gemsPerPlayer: {},
+        winner: "",
+        loser: "",
         totalDeaths: 0,
         totalGems: 0,
         totalTurns: 0
@@ -92,6 +98,8 @@ function CalculateGameStats(game: Game): GameStats {
     const playerDeaths: { [key: string]: number } = {};
     const playerLives: { [key: string]: number } = {};
     const playerSurvivingTurns: { [key: string]: number } = {};
+    let leastGems: number = Number.MAX_VALUE;
+    let mostGems: number = 0;
 
     game.rounds.forEach((round: GameRound): void => {
         const gems: MinMaxAverage = {
@@ -116,6 +124,7 @@ function CalculateGameStats(game: Game): GameStats {
                 playerDeaths[player.name] = 0;
                 playerLives[player.name] = 0;
                 playerSurvivingTurns[player.name] = 0;
+                stats.gemsPerPlayer[player.name] = 0;
             }
             if (player.endedInDeath) {
                 playerDeaths[player.name]++;
@@ -123,6 +132,7 @@ function CalculateGameStats(game: Game): GameStats {
                 playerLives[player.name]++;
                 playerSurvivingTurns[player.name] += player.turns;
             }
+            stats.gemsPerPlayer[player.name] += player.gems;
 
             gems.average += player.gems;
             if (player.gems > gems.max) {
@@ -157,6 +167,15 @@ function CalculateGameStats(game: Game): GameStats {
 
         if (stats.riskiestPlayer == "" || playerSurvivingTurns[stats.riskiestPlayer] < playerSurvivingTurns[key]) {
             stats.riskiestPlayer = key;
+        }
+
+        if (stats.gemsPerPlayer[key] > mostGems) {
+            stats.winner = key;
+            mostGems = stats.gemsPerPlayer[key];
+        }
+        if (stats.gemsPerPlayer[key] < leastGems) {
+            stats.loser = key;
+            leastGems = stats.gemsPerPlayer[key];
         }
     });
 
