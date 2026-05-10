@@ -19,16 +19,21 @@ const App = () => {
     const [theme, setTheme] = useState(DEFAULT_THEME);
     const [title, setTitle] = useState(DEFAULT_TITLE);
 
+    const [email, setEmail] = useState("");
+
     return (
         <div data-theme={theme} className="min-h-screen bg-base-300">
             <HashRouter>
                 <Routes>
-                    <Route path="/" element={<Header theme={theme} setTheme={setTheme} title={title}/>}>
-                        <Route path="/" element={<Home setTitle={setTitle} games={games} setCurrentGame={setCurrentGame}/>}/>
+                    <Route path="/" element={<Header theme={theme} setTheme={setTheme} title={title} email={email}
+                                                     setEmail={setEmail}/>}>
+                        <Route path="/"
+                               element={<Home setTitle={setTitle} games={games} setGames={setGames}
+                                              setCurrentGame={setCurrentGame} email={email}/>}/>
                         <Route path="/setup" element={<Setup setTitle={setTitle} setCurrentGame={setCurrentGame}/>}/>
                         <Route path="/play" element={<Play setTitle={setTitle} currentGame={currentGame}
                                                            setCurrentGame={setCurrentGame} games={games}
-                                                           setGames={setGames}/>}/>
+                                                           setGames={setGames} email={email}/>}/>
                         <Route path="/results" element={<Results setTitle={setTitle} currentGame={currentGame}/>}/>
                     </Route>
                 </Routes>

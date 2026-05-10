@@ -1,31 +1,42 @@
 import {useNavigate} from "react-router";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 import Card from "../Card.tsx";
+
 import type {Game} from "../../data/Game.ts";
-import {CalculateGeneralFacts, type GeneralFacts} from "../../data/GameStats.ts";
+import {CalculateGeneralFacts} from "../../data/GameStats.ts";
+import {loadGames} from "../../data/CloudApi.ts";
 
 type HomeProps = {
     setTitle: (newTitle: string) => void,
     games: Game[],
+    setGames: (newGames: Game[]) => void,
     setCurrentGame: (newGame: Game) => void,
+    email: string
 }
 
-const Home = ({setTitle, games, setCurrentGame}: HomeProps) => {
+const Home = ({setTitle, games, setGames, setCurrentGame, email}: HomeProps) => {
 
     const nav = useNavigate();
-
-    const generalFacts: GeneralFacts = CalculateGeneralFacts(games);
+    const [generalFacts, setGeneralFacts] = useState(CalculateGeneralFacts(games));
 
     useEffect(() => {
         setTitle("Home");
-    });
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            const loadedGames: Game[] = await loadGames(email);
+            setGames(loadedGames);
+            setGeneralFacts(CalculateGeneralFacts(loadedGames));
+        })();
+    }, [email]);
 
     return (
         <>
             <Card>
                 <div className="space-y-2">
-                    <h1 className="text-4xl font-bold color">
+                    <h1 className="text-4xl font-bold">
                         Incan Gold Companion
                     </h1>
                     <p className="opacity-80 max-w-2xl">
@@ -41,7 +52,6 @@ const Home = ({setTitle, games, setCurrentGame}: HomeProps) => {
             <ul className="list bg-base-100 rounded-box shadow-md">
 
                 <li className="p-4 pb-2 tracking-wide font-bold">Previous Games</li>
-
                 {
                     games.length == 0 ? <li className="list-row opacity-50">No Games</li> : games.map((game, i) => {
                         return (

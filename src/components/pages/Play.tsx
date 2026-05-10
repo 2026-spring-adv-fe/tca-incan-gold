@@ -4,16 +4,18 @@ import {useNavigate} from "react-router";
 import PlayerRow from "../PlayerRow.tsx";
 
 import {createEmptyRound, type Game, type GameRound, NUM_ROUNDS} from "../../data/Game.ts";
+import {saveGame} from "../../data/CloudApi.ts";
 
 type PlayProps = {
     setTitle: (newTitle: string) => void,
     currentGame: Game,
     setCurrentGame: (newGame: Game) => void,
     games: Game[],
-    setGames: (newGames: Game[]) => void
+    setGames: (newGames: Game[]) => void,
+    email: string
 };
 
-const Play = ({setTitle, currentGame, setCurrentGame, games, setGames}: PlayProps) => {
+const Play = ({setTitle, currentGame, setCurrentGame, games, setGames, email}: PlayProps) => {
 
     const [currentRound, setCurrentRound] = useState<GameRound>(createEmptyRound(currentGame.players));
 
@@ -23,11 +25,11 @@ const Play = ({setTitle, currentGame, setCurrentGame, games, setGames}: PlayProp
         setTitle("Play");
     });
 
-    const nextRound = (forceFinish: boolean) => {
+    const nextRound = async (forceFinish: boolean) => {
         const game: Game = {...currentGame};
         const round: GameRound = {...currentRound};
         round.players.forEach((player) => {
-           if (player.endedInDeath) player.gems = 0;
+            if (player.endedInDeath) player.gems = 0;
         });
         game.rounds.push(round);
         if (forceFinish || currentGame.rounds.length - 1 == NUM_ROUNDS) {
@@ -37,6 +39,7 @@ const Play = ({setTitle, currentGame, setCurrentGame, games, setGames}: PlayProp
         setCurrentRound(createEmptyRound(currentGame.players));
         if (currentGame.rounds.length == NUM_ROUNDS || forceFinish) {
             setGames([...games, game]);
+            await saveGame(email, game);
             nav("/results");
         }
     }
@@ -51,11 +54,13 @@ const Play = ({setTitle, currentGame, setCurrentGame, games, setGames}: PlayProp
             }
             <div className="flex flex-col gap-2">
                 <button className="btn btn-lg btn-primary w-full"
-                        onClick={() => nextRound(false)}>{currentGame.rounds.length == NUM_ROUNDS - 1 ? "Save Game" : "Next Round"}</button>
+                        onClick={() => nextRound(false)}
+                        disabled={email.trim().length == 0}>{currentGame.rounds.length == NUM_ROUNDS - 1 ? "Save Game" : "Next Round"}</button>
                 <div className="grid grid-cols-2 gap-2">
                     <button className="btn btn-lg btn-soft btn-error w-full" onClick={() => nav("/")}>Discard Game
                     </button>
-                    <button className="btn btn-lg btn-soft btn-warning w-full" onClick={() => nextRound(true)}>Finish Early
+                    <button className="btn btn-lg btn-soft btn-warning w-full" onClick={() => nextRound(true)}
+                            disabled={email.trim().length == 0}>Finish Early
                     </button>
                 </div>
 
