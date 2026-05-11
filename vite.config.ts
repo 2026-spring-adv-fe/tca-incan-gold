@@ -12,7 +12,6 @@ export default defineConfig({
     manifest: {
       name: 'TCA Incan Gold',
       short_name: 'TCA Incan Gold',
-      theme_color: '#ffffff',
       icons: [
         {
           src: 'pwa-64x64.png',
