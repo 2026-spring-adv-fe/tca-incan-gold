@@ -30,7 +30,7 @@ const App = () => {
                         <Route path="/"
                                element={<Home setTitle={setTitle} games={games} setGames={setGames}
                                               setCurrentGame={setCurrentGame} email={email}/>}/>
-                        <Route path="/setup" element={<Setup setTitle={setTitle} setCurrentGame={setCurrentGame}/>}/>
+                        <Route path="/setup" element={<Setup setTitle={setTitle} setCurrentGame={setCurrentGame} games={games}/>}/>
                         <Route path="/play" element={<Play setTitle={setTitle} currentGame={currentGame}
                                                            setCurrentGame={setCurrentGame} games={games}
                                                            setGames={setGames} email={email}/>}/>

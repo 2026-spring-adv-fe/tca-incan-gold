@@ -210,6 +210,14 @@ function CalculateGameStats(game: Game): GameStats {
     return stats;
 }
 
+function GetPastPlayers(games: Game[]): string[] {
+    const pastPlayers: string[] = [];
+    games.map((game) => game.players).forEach((players: string[]) => {
+        pastPlayers.push(...players);
+    });
+    return [...new Set(pastPlayers)];
+}
+
 export type {GameStats, GeneralFacts, Leaderboard};
 export {
     CalculateGameStats,
@@ -217,5 +225,6 @@ export {
     CreateEmptyGeneralFacts,
     CreateEmptyLeaderboard,
     CalculateGeneralFacts,
-    CalculateLeaderboard
+    CalculateLeaderboard,
+    GetPastPlayers
 };

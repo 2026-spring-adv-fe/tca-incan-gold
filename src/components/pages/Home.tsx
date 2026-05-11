@@ -126,7 +126,7 @@ const Home = ({setTitle, games, setGames, setCurrentGame, email}: HomeProps) => 
 
             </ul>
 
-            <p className="mt-2">stats and leaderboards coming soon™</p>
+            {/*<p className="mt-2">stats and leaderboards coming soon™</p>*/}
 
         </>
     )
