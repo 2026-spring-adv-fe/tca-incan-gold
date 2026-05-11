@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import Card from "../Card.tsx";
 
 import type {Game} from "../../data/Game.ts";
-import {CalculateGeneralFacts} from "../../data/GameStats.ts";
+import {CalculateGeneralFacts, CalculateLeaderboard} from "../../data/GameStats.ts";
 import {loadGames} from "../../data/CloudApi.ts";
 
 type HomeProps = {
@@ -19,6 +19,7 @@ const Home = ({setTitle, games, setGames, setCurrentGame, email}: HomeProps) => 
 
     const nav = useNavigate();
     const [generalFacts, setGeneralFacts] = useState(CalculateGeneralFacts(games));
+    const [leaderboard, setLeaderboard] = useState(CalculateLeaderboard(games));
 
     useEffect(() => {
         setTitle("Home");
@@ -29,6 +30,7 @@ const Home = ({setTitle, games, setGames, setCurrentGame, email}: HomeProps) => 
             const loadedGames: Game[] = await loadGames(email);
             setGames(loadedGames);
             setGeneralFacts(CalculateGeneralFacts(loadedGames));
+            setLeaderboard(CalculateLeaderboard(loadedGames));
         })();
     }, [email]);
 
@@ -99,6 +101,29 @@ const Home = ({setTitle, games, setGames, setCurrentGame, email}: HomeProps) => 
                     </div>
                     {generalFacts.totalGames}
                 </li>
+            </ul>
+
+            <ul className="list bg-base-100 rounded-box shadow-md mt-2">
+
+                <li className="p-4 pb-2 tracking-wide font-bold">Leaderboard</li>
+                {
+                    leaderboard.length == 0 ? <li className="list-row opacity-50">No Data</li> : leaderboard.map((entry, i) => {
+                        return (
+                            <li className="list-row" key={i}>
+                                <span className="opacity-50 font-black">
+                                    {(i+1).toString()}
+                                </span>
+                                <div className="list-col-grow">
+                                    <div>{entry.name}</div>
+                                </div>
+                                <span>
+                                    {entry.score.toString()} gem(s)
+                                </span>
+                            </li>
+                        );
+                    })
+                }
+
             </ul>
 
             <p className="mt-2">stats and leaderboards coming soon™</p>

@@ -18,7 +18,7 @@ type GameStats = {
     mostAlivePlayer: string,
     /// Player that lasted the longest WHILE SURVIVING
     riskiestPlayer: string,
-    gemsPerPlayer: {[key: string]: number},
+    gemsPerPlayer: { [key: string]: number },
     winner: string,
     loser: string,
 
@@ -66,7 +66,7 @@ function CalculateGeneralFacts(games: Game[]): GeneralFacts {
             shortestGameTime = gameLength;
         }
     });
-    if (lastPlayedTime != 0) facts.lastPlayed =  new Date(lastPlayedTime).toLocaleString();
+    if (lastPlayedTime != 0) facts.lastPlayed = new Date(lastPlayedTime).toLocaleString();
     if (longestGameTime != 0) facts.longestGame = durationFormatter<string>()(longestGameTime);
     if (shortestGameTime != Number.MAX_VALUE) facts.shortestGame = durationFormatter<string>()(shortestGameTime);
     return facts;
@@ -74,6 +74,34 @@ function CalculateGeneralFacts(games: Game[]): GeneralFacts {
 
 function CreateEmptyLeaderboard(): Leaderboard {
     return [];
+}
+
+function CalculateLeaderboard(games: Game[]): Leaderboard {
+    const records: { [key: string]: number } = {};
+    games.map((game) => game.rounds).forEach((rounds) => {
+        rounds.forEach((round => {
+            round.players.forEach((player) => {
+                if (!player.endedInDeath) {
+                    if (!(player.name in records)) {
+                        records[player.name] = 0;
+                    }
+                    records[player.name] += player.gems;
+                }
+            });
+        }));
+    });
+
+    const leaderboard = CreateEmptyLeaderboard();
+    Object.keys(records).forEach((key) => {
+        leaderboard.push({
+            name: key,
+            score: records[key]
+        });
+    });
+    leaderboard.sort((a, b) => b.score - a.score);
+    console.log(leaderboard);
+    return leaderboard;
+
 }
 
 function CreateEmptyGameStats(): GameStats {
@@ -183,4 +211,11 @@ function CalculateGameStats(game: Game): GameStats {
 }
 
 export type {GameStats, GeneralFacts, Leaderboard};
-export {CalculateGameStats, CreateEmptyGameStats, CreateEmptyGeneralFacts, CreateEmptyLeaderboard, CalculateGeneralFacts};
+export {
+    CalculateGameStats,
+    CreateEmptyGameStats,
+    CreateEmptyGeneralFacts,
+    CreateEmptyLeaderboard,
+    CalculateGeneralFacts,
+    CalculateLeaderboard
+};
