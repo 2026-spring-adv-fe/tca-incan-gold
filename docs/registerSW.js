@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/tca-incan-gold/sw.js', { scope: '/tca-incan-gold/' })})}
