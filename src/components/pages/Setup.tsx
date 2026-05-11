@@ -74,11 +74,6 @@ const Setup = ({setTitle, setCurrentGame, games}: SetupProps) => {
                 </button>
                 <button className="btn btn-lg btn-soft btn-warning w-full" onClick={() => nav("/")}>Cancel</button>
             </div>
-
-            {/*<br/>*/}
-            {/*<button className="btn btn-secondary" onClick={() => {*/}
-            {/*    setPlayers(["a", "b", "c"]);*/}
-            {/*}}>Testing Players</button>*/}
         </>
     )
 }

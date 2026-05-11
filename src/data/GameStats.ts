@@ -99,7 +99,6 @@ function CalculateLeaderboard(games: Game[]): Leaderboard {
         });
     });
     leaderboard.sort((a, b) => b.score - a.score);
-    console.log(leaderboard);
     return leaderboard;
 
 }
