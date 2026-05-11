@@ -49,7 +49,7 @@ const createEmptyRound = (players: string[]): GameRound => {
     return round;
 }
 
-const MIN_PLAYERS = 3;
+const MIN_PLAYERS = 2;
 const MAX_PLAYERS = 5;
 const NUM_ROUNDS = 5;
 
